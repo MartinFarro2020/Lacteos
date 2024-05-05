@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Lacteos</title>
+    <script src = "./main.js" defer></script>
+</head>
+<body>
+    <header class="content_navbar">
+        <nav class="navbar">
+            <a class="delvalle" href="#">Del Valle</a>
+            <i class='bx bx-cart bx-tada-hover icon_car'></i>
+        </nav>
+    </header>
+
+    <div class="buttons">
+        <button  class="btn" id="all">All</button>
+        <button  class="btn" id="Queso">Quesos</button>
+        <button  class="btn" id="Yogurt">Yogurt</button>
+        <button  class="btn" id="Manjar">Manjar</button>
+    </div>
+    <div class="container">
+        <div class="products"></div>
+    </div>
+    <div class="cart">
+        <div class="cart_products"></div>
+        <div class="cart_total">
+            <div class="cart_total_info">
+                <p>Items <span id="totalProducts">0</span></p>
+                <p>Total $ <span id="totalPrice">0</span></p>
+            </div>
+                <button class="btn_buy">Comprar</button>
+        </div>
+    </div>
+    
+</body>
+</html>

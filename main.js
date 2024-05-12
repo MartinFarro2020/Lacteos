@@ -41,7 +41,8 @@ function paintProducts(store){
                 </div>
                 <p class="description">${categoria} - <b>${nombre}</b></p>
                 <p class="description">$${precio}.0 - Stock ${stock}</p>
-                <button class="product_btn" id="${id}">Agregar</button>
+                ${stock ? `<button class="product_btn" id="${id}">Agregar</button>`: "<div></div>"}
+                
             </div> 
         
         `;
@@ -138,10 +139,91 @@ function addToCartFromProducts(store){
         }   
         //Con esta sentencia hacemos que el cart se almacene en el local storage
         
-        
         paintProductsInCart(store)
-
+        printTotal(store);
     })
+}
+
+function printTotal(store){
+    let totalProducts = 0;
+    let totalPrice = 0;
+
+    for (const key in store.cart){
+        const {amount, precio} =store.cart[key];
+        totalProducts += amount;
+        totalPrice += amount * precio;
+
+    }
+
+    document.querySelector("#totalProducts").textContent = totalProducts;
+    document.querySelector("#totalPrice").textContent = totalPrice;
+    document.querySelector(".ball").textContent = totalProducts;
+}
+
+function handleCart(store){
+    document
+    .querySelector(".cart_products")
+    .addEventListener("click",function(e){
+        if (e.target.classList.contains("bx")){
+            const id = Number(e.target.parentElement.id);
+
+            if (e.target.classList.contains("bx-minus")) {
+                
+                if (store.cart[id].amount === 1) {
+                    const response = confirm("Seguro quieres eliminar?")
+                    if (response) delete store.cart[id];
+                }else{
+                    store.cart[id].amount--;
+                    
+                }                 
+            }
+            if (e.target.classList.contains("bx-plus")) {   
+                validateAmountProduct(store,id)
+                
+            }
+            if (e.target.classList.contains("bxs-trash")) {
+                const response = confirm("Seguro quieres eliminar?")
+                if (response) delete store.cart[id];
+            }
+
+            localStorage.setItem("cart",JSON.stringify(store.cart));
+            paintProductsInCart(store);
+            printTotal(store);
+
+        }
+        
+    });
+}
+
+function handleTotal(store){
+    document.querySelector(".btn_buy").addEventListener('click',function(){
+        if(!Object.values(store.cart).length)
+            return alert("Primero debes elegir algo");
+        const response = confirm("Seguro que quieres comprar")
+        if (!response) return;
+        
+        const newArray = [];
+        store.products.forEach((product)=>{
+             if(store.cart[product.id]) {
+                 newArray.push({
+                     ...product,
+                     stock: product.stock - store.cart[product.id].amount
+                 });
+             }else{
+                 newArray.push(product);
+             }
+        });
+        
+        store.products = newArray;
+        store.cart = {};
+ 
+        localStorage.setItem("products",JSON.stringify(store.products));
+        localStorage.setItem("cart",JSON.stringify(store.cart));
+        paintProducts(store);
+        paintProductsInCart(store);
+        printTotal(store);
+        
+     });
 }
 
 
@@ -159,37 +241,10 @@ async function main(){
     handleShowCart();
     addToCartFromProducts(store);
     paintProductsInCart(store);
+    handleCart(store);
+    printTotal(store);
+    handleTotal(store)
 
-    document
-        .querySelector(".cart_products")
-        .addEventListener("click",function(e){
-            if (e.target.classList.contains("bx")){
-                const id = Number(e.target.parentElement.id);
-
-                if (e.target.classList.contains("bx-minus")) {
-                    
-                    if (store.cart[id].amount === 1) {
-                        const response = confirm("Seguro quieres eliminar?")
-                        if (response) delete store.cart[id];
-                    }else{
-                        store.cart[id].amount--;
-                        
-                    }                 
-                }
-                if (e.target.classList.contains("bx-plus")) {   
-                    validateAmountProduct(store,id)
-                    
-                }
-                if (e.target.classList.contains("bxs-trash")) {
-                    const response = confirm("Seguro quieres eliminar?")
-                    if (response) delete store.cart[id];
-                }
-
-                localStorage.setItem("cart",JSON.stringify(store.cart));
-                paintProductsInCart(store)
-            }
-            
-        });
 
 }
 

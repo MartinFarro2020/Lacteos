@@ -22,6 +22,22 @@ a{
 .icon_car{
     font-size: 2rem;
     cursor: pointer;
+    position: relative;
+}
+
+.icon_car span{
+    display: inline-block;
+    background-color: rgb(12, 8, 246);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 1rem;
+    color: aliceblue;
+    display: grid;
+    place-items: center;
+    position: absolute;
+    top:1rem;
+    right: -1rem;
 }
 
 .content_navbar{
@@ -33,7 +49,7 @@ a{
 }
 
 .navbar{
-    background-color:#07bb2b;
+    background-color:#f67e42;
     display: flex;
     justify-content: space-between;
     align-items: center;

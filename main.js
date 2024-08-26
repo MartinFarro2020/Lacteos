@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:3000/lacteos";
+const BASE_URL = "./lacteos.json";
+/*http://localhost:3000/lacteos */
 
 async function getProducts(){
     try {

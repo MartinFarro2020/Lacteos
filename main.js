@@ -41,31 +41,35 @@ function paintProducts(store){
                 </div>
                 <p class="description">${categoria} - <b>${nombre}</b></p>
                 <p class="description">$${precio}.0 - Stock ${stock}</p>
-                ${stock ? `<button class="product_btn" id="${id}">Agregar</button>`: "<div></div>"}
+                ${stock ? `
+                <button class="product_btn" id="${id}">Agregar</button>`: "<div></div>"}
                 
             </div> 
         
         `;
-        
     });
+    console.log(store.products);
     
     document.querySelector(".products").innerHTML = html;
 
 }
 
-function handleFilter(store){
+function handleFilter(store,storeAux){
     const buttons= document.querySelectorAll(".buttons .btn");
 
     buttons.forEach(function (button) {
         button.addEventListener("click", function(e){
              const perro = e.target.id
             if ( perro === "all"){
-                paintProducts(store.products);
+                paintProducts(store);
             } else{
                     const newArray = store.products.filter(function (product){
+                    
                     return product.categoria === perro;
                 })
-                paintProducts(newArray);
+                storeAux.products=newArray
+                
+                paintProducts(storeAux);
             }
         });
     });
@@ -86,8 +90,11 @@ function paintProductsInCart(store){
 
             for (const key in store.cart) {
                 const {amount, id, imagen, nombre, precio, categoria,url,stock} = store.cart[key]
+                console.log(store.cart);
+                
                 html += `
                     <div class="cart_product">
+                        
                         <div class="cart_product_img">
                             <img src="${url}" alt="" />
                         </div>
@@ -235,9 +242,12 @@ async function main(){
                 (await getProducts()),
         cart: JSON.parse(localStorage.getItem('cart')) || {},
     }
+    const storeAux = {
+        products:{},
+    }
 
     paintProducts(store);
-    handleFilter(store);
+    handleFilter(store,storeAux);
     handleShowCart();
     addToCartFromProducts(store);
     paintProductsInCart(store);

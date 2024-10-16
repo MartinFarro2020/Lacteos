@@ -1,15 +1,18 @@
-const BASE_URL = "./lacteos.json";
-/*http://localhost:3000/lacteos */
+const BASE_URL = "./lacteos.jsonp"
+
 
 async function getProducts(){
     try {
         const data = await fetch(BASE_URL);
+        
         const response = await data.json();
         localStorage.setItem("products",JSON.stringify(response));
+        console.log(response);
         return response;
     } catch (error) {
         console.log(error);
     }
+    
 }
 
 function validateAmountProduct(store, id){
